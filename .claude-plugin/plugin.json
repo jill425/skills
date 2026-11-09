@@ -1,0 +1,18 @@
+{
+  "name": "jill425",
+  "version": "0.1.0",
+  "description": "task 單工作流（建單 → 執行 → 隔離驗收 → 完成，持續推進下一張）、反向驗證 TDD、改動影響面、規則固化，加上架構文件、技術文章、圖表、潤稿、AI 日報等工具 skill。",
+  "author": {
+    "name": "jill425"
+  },
+  "homepage": "https://github.com/jill425/skills",
+  "repository": "https://github.com/jill425/skills",
+  "keywords": [
+    "workflow",
+    "tdd",
+    "task",
+    "verification",
+    "skills"
+  ],
+  "license": "MIT"
+}

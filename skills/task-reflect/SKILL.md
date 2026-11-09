@@ -1,0 +1,63 @@
+---
+name: task-reflect
+description: 回顧：一輪 task-run 跑完、或一段工作結束後，從單上的紀錄、決策紀錄、git 歷史與對話紀錄找出值得留下的經驗，整理成「建議怎麼改 skill、契約或專案規則」的清單，使用者同意的才改。使用者說「回顧」「reflect」「這次學到什麼」，或 task-run 彙總建議時使用。同一種錯重複出現改用 jill425:rule-enforce。Use after a run to turn lessons into proposed skill or rule edits, applied only with approval.
+---
+
+# jill425:task-reflect — 回顧這一輪
+
+一次性的事件不算經驗。要找的是：下次遇到同類工作時，改了某個 skill、契約或專案規則就能做得更好的地方。
+
+派 subagent 照契約〈派 subagent 的慣例〉與〈模型分配〉（`${CLAUDE_PLUGIN_ROOT}/contract/task-contract.md`）。
+
+## 1. 收證據
+
+範圍是這一輪、這個專案。讀別的專案的紀錄前先問使用者。
+
+- **決策紀錄**：`$(git rev-parse --git-common-dir)/jill425/decisions.tsv` 裡這一輪的列。
+- **單上的紀錄**：這一輪碰過的每張單，每輪驗收結果的現象與修復、執行備註（推翻假設、範圍變動、驗收標準需重新確認）、卡住原因。
+- **git**：這一輪的 commits、revert、緊接在 feat 後面的 fix。
+- **對話紀錄**：本 session 的 `~/.claude/projects/<slug>/<session>.jsonl` 與同名資料夾下的 `subagents/`（slug＝專案絕對路徑把 `/` 和 `.` 換成 `-`）。使用者糾正 agent 的地方是最重要的線索。
+
+✅ 完成：主線整理出一份按時間排的時間軸：每張單做了幾輪、卡在哪、使用者糾正了什麼。原始紀錄留給下一步的 subagent 自己讀，不貼進主線。
+
+## 2. 派三個審視者
+
+同一則訊息派出三個 `general-purpose` subagent，模型照「reflect 審視者」。brief 給時間軸、上面各個證據檔的路徑，以及各自的視角：
+
+- **判斷**：哪些決定事後看是錯的或繞了遠路；當時缺什麼資訊或規則就會做對。
+- **工具與流程**：哪些步驟重複、靠手動、容易出錯，可以做成腳本、hook 或範本；哪支 skill 的指示含糊、被誤讀、該觸發卻沒觸發。
+- **反向**：換一種完全不同的做法，這一輪會不會更好；現在流程的哪個前提可能是錯的。
+
+三個 brief 共同的要求：
+
+> 不要修改任何檔案。每條發現回報：發現、證據（決策紀錄的哪一列、哪張單第幾輪、對話的哪一段）、建議改哪個檔、具體怎麼改（寫到句子）、預期效果。沒有證據的不要報；只發生一次、找不到通則的不要報。沒有發現也是有效結果。
+
+## 3. 派彙整者
+
+三份回報都回來後，派一個 `general-purpose` subagent，模型照「reflect 彙整者」。brief 附上三份回報、時間軸，並交代：抽查出處，重疊的合併，然後分成三類：
+
+- **採納候選**：證據充分、改了會有通則效果。每條標落點：
+  - **plugin**：本 plugin 的 skill、agent 或契約。
+  - **專案**：專案的 `CLAUDE.md`。
+  - **個人**：使用者的 `~/.claude/CLAUDE.md`。
+- **轉 rule-enforce**：同一種錯已經出現第二次，或能用 lint、hook、測試直接擋的，交給 `jill425:rule-enforce`。
+- **不採納**：證據不足、一次性、或跟契約衝突，各附理由。
+
+不要修改任何檔案。
+
+## 4. 過目
+
+把三類清單完整列給使用者，每條附證據與具體改法。使用者挑要哪幾條，也可以改落點。⛔ 使用者同意前不改任何檔。
+
+## 5. 套用
+
+- **plugin**：`${CLAUDE_PLUGIN_ROOT}` 不在 `~/.claude/plugins/cache/` 底下時，表示 plugin 是從本機目錄安裝的，直接改那個目錄裡的檔，不 commit，讓使用者自己 commit。在快取底下時不改（plugin 更新會覆寫），把改法整理成一段文字，讓使用者自己 fork 或回報給 plugin 作者。
+- **專案**：改專案 `CLAUDE.md`，不 commit，回報改了什麼。
+- **個人**：改 `~/.claude/CLAUDE.md`，改前備份。
+- **轉 rule-enforce**：列出來，問使用者要不要接著跑 `jill425:rule-enforce`。
+
+## 6. 回報
+
+- **改了**：每個檔一行，說明改了什麼。
+- **轉 rule-enforce**：清單。
+- **不採納**：一條一行，附理由。

@@ -1,0 +1,14 @@
+{
+  "name": "jill425",
+  "description": "jill425 的 Claude Code plugin",
+  "owner": {
+    "name": "jill425"
+  },
+  "plugins": [
+    {
+      "name": "jill425",
+      "source": "./",
+      "description": "task 單工作流、反向驗證 TDD、改動影響面、規則固化與工具 skill。"
+    }
+  ]
+}
