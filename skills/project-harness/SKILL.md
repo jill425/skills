@@ -1,6 +1,7 @@
 ---
 name: project-harness
-description: 替專案產生一個專案內的 verify skill（`.claude/skills/verify-<app>/`）：怎麼啟動真實 app、怎麼確認它可用、怎麼像使用者一樣操作、證據存哪、怎麼清掉，再加一份功能地圖；產出後自己完整跑過一次才算交付。當專案有畫面或對外服務、但沒有腳本化的方式證明行為時使用；jill425:project-init 交接時、使用者說「建立驗證工具」「讓 tester 能操作畫面」時也用。 Use to create a project-local skill that launches the real app, drives it like a user, and keeps evidence.
+description: 替專案產生 verify-<app> skill：啟動真實 app、像使用者一樣操作、留下證據。
+disable-model-invocation: true
 ---
 
 # jill425:project-harness — 產生專案的驗證 skill

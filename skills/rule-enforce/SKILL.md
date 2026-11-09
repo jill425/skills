@@ -1,6 +1,6 @@
 ---
 name: rule-enforce
-description: 把一再糾正 agent 的同類錯誤固化成會自動擋的檢查：從對話紀錄、git 歷史、review 意見找出犯過兩次以上的錯，依「架構 → 型別／lint／hook／CI → 測試 → 文件」選最上層擋得住的方式修，並維護「規則 ↔ 誰強制」對照表。當使用者說「又犯同樣的錯」「這個講過很多次了」「把這條規則做成檢查」，或要盤點哪些規則只靠文字時使用。 Use when the agent keeps repeating the same mistake and the rule should become an automated check.
+description: 把一再糾正的錯改成會自動擋的檢查：同一種錯出現第二次，或使用者要把某條規則做成檢查時使用。
 ---
 
 # jill425:rule-enforce — 把教訓變成檢查

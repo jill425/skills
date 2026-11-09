@@ -1,6 +1,6 @@
 ---
 name: code-design
-description: 寫 code 之前先設計介面：從呼叫端怎麼用開始，推出型別、函式簽名與模組分工，至少比較兩個結構不同的方案，對照設計警訊選一個，再照它實作。改動要新增或改變跨模組的介面、新增模組、或專案裡沒有前例的架構決定時使用；jill425:task-executor 遇到這類單會叫用。Use before implementing anything that crosses a function or module boundary.
+description: 先設計介面再寫：改動要新增或改變跨模組的介面、新增模組，或做沒有前例的架構決定時使用。
 ---
 
 # jill425:code-design — 先設計介面再寫

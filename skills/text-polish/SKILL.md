@@ -1,6 +1,6 @@
 ---
 name: text-polish
-description: 潤稿：把使用者貼上的文字改通順，並依對象（主管、同事、PM／跨部門、客戶／外部、朋友）與頻道（Slack／Teams、Email、LINE、GitLab issue／MR、公告）調整語氣與格式。當使用者貼一段文字要「潤一下」「改通順」「調語氣」，或說這段要發給某人、貼到某個頻道時使用。 Use to polish a pasted message for a given audience and channel.
+description: 潤稿：使用者貼一段文字要改通順、調語氣，或說要發給某人、貼到某個頻道時使用。
 ---
 
 # 潤稿

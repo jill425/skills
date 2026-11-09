@@ -1,6 +1,6 @@
 ---
 name: code-impact
-description: 改動影響面分析與攻擊式審查：找出一個改動會在別處弄壞什麼，把「它安全是因為哪個事實」用實際跑的 code 證明，再派兩個攻擊者試著把它弄壞，只留下跑得出來的發現。改到對外介面（API 的 request／response 欄位、訊息格式）、DB schema、被多處共用的模組時，送驗前由 jill425:task-executor 叫用；使用者問「這會影響到哪」「改這個會壞什麼」「blast radius」時也用。 Use for 'blast radius', 'what could this break', or before shipping a change to an API, DB schema, or shared module.
+description: 改動影響面（blast radius）：改到 API 欄位、DB schema 或共用模組，或使用者問「改這個會壞到哪」時使用。
 ---
 
 # jill425:code-impact — 改動會壞到哪

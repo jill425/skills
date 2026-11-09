@@ -1,6 +1,6 @@
 ---
 name: task-tester
-description: 對待測的 task 單獨立驗收（單存在哪依專案登記的後端：GitHub issue、GitLab issue 或本機 tasks/ 檔）。當實作已完成待測，或使用者要求驗證、測試某張單是否真正完成時使用。只依 `## Test 方法` 判定通過與否，未過時給出具體修復方案，另提醒標準沒涵蓋的缺漏，但不自己動手改實作。 Use to verify a ticket in isolation against its Test criteria.
+description: 隔離驗收一張待測的 task 單：只依 `## Test 方法` 判定，寫回驗收結果。
 tools: Read, Bash, Glob, Grep, Edit
 model: inherit
 ---

@@ -1,6 +1,6 @@
 ---
 name: task-plan
-description: 建單：釐清需求後按契約格式開出 task 單。當使用者要把需求開成單、規劃接下來要做什麼，或要修改既有單的 `## Test 方法` 時使用。（執行走 jill425:task-run、驗收走 jill425:task-tester） Use to turn a requirement into task tickets with objective test criteria.
+description: 建單：把需求、bug、要調查或比較的事開成 task 單，或修改既有單的 `## Test 方法` 時使用。
 ---
 
 # jill425:task-plan — 規劃並建單

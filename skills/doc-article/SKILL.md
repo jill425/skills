@@ -1,12 +1,7 @@
 ---
 name: doc-article
-description: >-
-  把當前對話中討論過的內容,整理成一篇結構完整的技術文章,並寫入使用者的 Notion「技術文章 Tech Notes」資料庫。
-  文章採中英混合,包含背景情境、問題點、技術點、解決方案、延伸思考、程式碼片段與參考連結,
-  並特別整理出讀者可吸收的「知識點」。使用者明確要「整理成技術文章／tech note」或「寫進 Notion」時使用,
-  例如把除錯過程、技術選型討論、架構設計對話、踩坑紀錄轉成可回顧的文章。只是要口語摘要、
-  或要存到 Notion 以外的地方時不要用。
-  Use when the user explicitly asks to turn this conversation into a tech article or tech note in Notion.
+description: 把這次對話整理成技術文章，寫進 Notion「技術文章 Tech Notes」。
+disable-model-invocation: true
 ---
 
 # 把討論整理成技術文章並存進 Notion

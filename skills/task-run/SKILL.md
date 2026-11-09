@@ -1,6 +1,6 @@
 ---
 name: task-run
-description: 執行 task 單：依序取出待辦，派執行者實作、派驗收者驗收，未過就重做，通過就接下一張，直到沒有可做的單，最後彙總。當使用者說「執行/推進待辦」「把待辦做完」「做下一張單」「繼續做」「把這張 task 做出來」，或驗收未過要在原單重做時使用。（建單走 jill425:task-plan） Use to work through the task backlog, implementing, verifying, retrying, and moving on to the next ticket.
+description: 執行 task 單：使用者要推進待辦、做某張單，或驗收未過要重做時使用；依序派執行者與驗收者，做到沒有可做的單為止。
 ---
 
 # jill425:task-run — 執行 task

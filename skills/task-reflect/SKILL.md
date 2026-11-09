@@ -1,6 +1,6 @@
 ---
 name: task-reflect
-description: 回顧：一輪 task-run 跑完、或一段工作結束後，從單上的紀錄、決策紀錄、git 歷史與對話紀錄找出值得留下的經驗，整理成「建議怎麼改 skill、契約或專案規則」的清單，使用者同意的才改。使用者說「回顧」「reflect」「這次學到什麼」，或 task-run 彙總建議時使用。同一種錯重複出現改用 jill425:rule-enforce。Use after a run to turn lessons into proposed skill or rule edits, applied only with approval.
+description: 回顧：一輪 task-run 跑完，或使用者要回顧這次學到什麼時，整理出 skill、契約或專案規則的修改建議，經同意才改。
 ---
 
 # jill425:task-reflect — 回顧這一輪

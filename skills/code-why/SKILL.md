@@ -1,6 +1,6 @@
 ---
 name: code-why
-description: 查一段 code 為什麼長這樣：從 git 歷史、PR／MR 討論、issue，以及接上的文件、聊天、錯誤追蹤等來源找出當初的動機與取捨，每個結論標明證據強度，查不到就說查不到。使用者問「為什麼這樣寫」「這段可以拿掉嗎」「以前為什麼改成這樣」，或修 bug 時需要知道「以前可以、現在不行」中間改了什麼時使用。怎麼運作用 jill425:code-how。Use for "why was this built this way" and regression-history questions.
+description: 查 code 為什麼長這樣：使用者問為什麼這樣寫、能不能拿掉、從哪次改動開始變的時使用。
 ---
 
 # jill425:code-why — 這段 code 為什麼長這樣

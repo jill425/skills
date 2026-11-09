@@ -1,6 +1,6 @@
 ---
 name: code-how
-description: 解釋一段 code 或一個子系統怎麼運作：元件、執行流程、資料怎麼走、東西放在哪、哪裡容易踩坑。複雜的範圍會派幾個探索者各查一個面向，再整合成一份說明。使用者問「X 怎麼運作」「這段在做什麼」「這該放哪一層」，或改不熟的模組、開單前需要先搞懂現況時使用。為什麼長這樣用 jill425:code-why。Use for "how does X work", code walkthroughs, and where-does-this-belong questions.
+description: 解釋 code 怎麼運作：使用者問某段 code 或子系統怎麼運作、該放哪一層，或要改不熟的模組前使用。
 ---
 
 # jill425:code-how — 這段 code 怎麼運作

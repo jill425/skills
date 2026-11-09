@@ -1,6 +1,7 @@
 ---
 name: start
-description: 入口：依專案現況與使用者的話，判斷要初始化專案、開需求單、開 bug 單、還是執行待辦，再交給對應的 skill。使用者說「開始」「幫我處理這個」，或丟來一個需求、一個錯誤但沒指定流程時使用。Use as the entry point when the user brings a request, a bug, or "let's go" without naming a workflow.
+description: 入口：依專案現況，把需求、bug、問題或「繼續」交給對應的 skill。
+disable-model-invocation: true
 ---
 
 # jill425:start — 入口

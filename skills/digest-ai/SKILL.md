@@ -1,6 +1,7 @@
 ---
 name: digest-ai
-description: AI 日報：撈「當天與前一天」新發布的 AI 技術內容，大神 X 推文與一手文章優先，另含模型發布、研究論文、架構設計、GitHub 熱門 repo、大神影片、資安動態、產業動態，寫進 Notion「AI 技術日報彙整」當天一頁。使用者明確要「AI 日報」「每日 AI 彙整」，或排程觸發時使用；只是隨口問今天的 AI 或資安新聞時直接回答，不跑本 skill、不寫 Notion。Use only when the user asks for the daily AI digest.
+description: 產出今天的 AI 技術日報，寫進 Notion「AI 技術日報彙整」。
+disable-model-invocation: true
 ---
 
 # AI 技術日報

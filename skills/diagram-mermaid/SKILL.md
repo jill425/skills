@@ -1,6 +1,6 @@
 ---
 name: diagram-mermaid
-description: 產出「深色技術風」Mermaid 圖，存到 docs/arch/。手動觸發用；架構文件預設走 jill425:doc-arch。Manual-only. Renders a dark-themed Mermaid diagram of the project's architecture.
+description: 產出深色技術風的 Mermaid 架構圖，存到 docs/arch/。
 disable-model-invocation: true
 ---
 
@@ -9,11 +9,6 @@ disable-model-invocation: true
 用 Mermaid 產出**會論證、非只展示**的圖,寫進 Markdown code block。特性:純文字事實來源、可 diff、GitHub / VS Code 原生渲染、改一行即更新。預設套用**深色技術風主題**(見 `references/style.md`)。
 
 > Mermaid 檔本身就是圖的事實來源(結構=flowchart 本體、呈現=`config` frontmatter),不需另建資料檔。但**系統架構的事實來源始終是 code 與專案 CLAUDE.md** —— 圖是衍生視圖,結構一變就同步更新對應圖,避免過時。
-
-## 何時用
-- 架構圖、分層圖、資料流 / fan-out 圖、依賴關係圖。
-- 流程圖、時序圖(sequence)、狀態機(state)、ER 圖。
-- 專案結構有變動、要讓圖同步時。
 
 ## 核心原則
 - **圖要論證,不只展示**:結構要傳達分層、方向、因果,不是把文字排進盒子。若把文字全拿掉,結構本身仍能說明概念,才算合格。

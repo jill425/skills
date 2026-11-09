@@ -1,6 +1,6 @@
 ---
 name: project-init
-description: 專案初始化：問答建立專案層級 CLAUDE.md 與 README、訂分階段路線圖與檢核點、產出初版架構文件。當使用者要初始化新專案、設定專案規則、建立或更新專案 CLAUDE.md 時使用。 Use to set up a project's CLAUDE.md, README, phased roadmap, and first architecture doc.
+description: 專案初始化：要建立或更新專案的 CLAUDE.md、README、分階段路線圖時使用。
 ---
 
 # jill425:project-init — 建立專案層級設定

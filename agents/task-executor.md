@@ -1,6 +1,6 @@
 ---
 name: task-executor
-description: 把一張 task 單從「執行中」做到「待測」：對錨、TDD 實作、送驗前 review、回寫並轉待測，最後交回固定格式的報告。由 jill425:task-run 派出，一次一張；也可在使用者要求「只實作這張、不驗收」時使用。Use to implement exactly one task ticket up to ready-for-verification.
+description: 把一張 task 單從執行中做到待測，交回固定格式的報告。由 jill425:task-run 派出，一次一張。
 model: inherit
 ---
 
