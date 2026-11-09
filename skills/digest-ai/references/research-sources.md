@@ -85,4 +85,3 @@ METR（metr.org）、Epoch AI（epoch.ai）、Apollo Research（apolloresearch.a
 - `interpretability paper {month year}`、`alignment research new paper`
 - `AI agent research paper {date}`、`LLM evaluation new paper`
 - `Hugging Face daily papers {date}`
-- 搜尋工具有分模式時，選較徹底、結果較新的模式。

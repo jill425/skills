@@ -36,7 +36,7 @@ disable-model-invocation: true
 
 X 頁面多半抓不到全文，照這個順序取得：
 
-1. 搜尋「大神名 / handle + 主題 + 日期」（搜尋工具有分模式時，選較徹底、結果較新的模式）。
+1. 搜尋「大神名 / handle + 主題 + 日期」。
 2. 抓得到的 x.com 連結用 WebFetch 確認日期與內容。
 3. 抓不到時走轉述推文的一手管道：Simon Willison 部落格、大神自己的 blog／newsletter、新聞稿引用的原推；有可信轉述且日期可確認才收，並標註「經 XX 轉述」。
 
@@ -53,6 +53,8 @@ X 頁面多半抓不到全文，照這個順序取得：
 **完成**：時間窗已寫出；知道今天是新建或更新；手上有昨天已收錄 URL 清單（或確認昨天無日報）。
 
 ### 1. 撈取
+
+所有搜尋都用較徹底、結果較新的模式（搜尋工具有分模式時）。
 
 先讀 `references/sources.md`、`references/research-sources.md`、`references/security-sources.md`，再依類型表優先序撈。各來源檔寫了該區的撈法（索引頁、首頁抓取、查詢範本），照著做。
 

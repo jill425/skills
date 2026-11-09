@@ -44,6 +44,6 @@ disable-model-invocation: true
 ### 4. 驗證(產出前必做)
 Mermaid 語法錯會整張圖不渲染,務必驗:
 - 若環境有 mermaid CLI:`npx -y @mermaid-js/mermaid-cli -i <file>.md -o /tmp/diagram.png` 可一次驗語法 + 出 PNG 檢視;跑不動則略過此步。
-- 人工檢查:每個 `-->` 兩端節點都有定義;`subgraph` 都有 `end`;`classDef` 名稱與 `:::` 使用一致;中文 / 特殊字元節點文字用 `["..."]` 包住。
+- 人工檢查:每個 `-->` 兩端節點都有定義;`subgraph` 都有 `end`;`classDef` 名稱與 `:::` 使用一致;節點文字的寫法照 `references/style.md`。
 - 版式提醒:層內 `direction LR` 若被跨層邊拉成垂直堆疊(Mermaid 已知行為),圖會偏高;必要時減少跨層邊或拆圖。
 
