@@ -16,7 +16,7 @@ description: 回顧：一輪 task-run 跑完、或一段工作結束後，從單
 - **決策紀錄**：`$(git rev-parse --git-common-dir)/jill425/decisions.tsv` 裡這一輪的列。
 - **單上的紀錄**：這一輪碰過的每張單，每輪驗收結果的現象與修復、執行備註（推翻假設、範圍變動、驗收標準需重新確認）、卡住原因。
 - **git**：這一輪的 commits、revert、緊接在 feat 後面的 fix。
-- **對話紀錄**：本 session 的 `~/.claude/projects/<slug>/<session>.jsonl` 與同名資料夾下的 `subagents/`（slug＝專案絕對路徑把 `/` 和 `.` 換成 `-`）。使用者糾正 agent 的地方是最重要的線索。
+- **對話紀錄**：本 session 的 `~/.claude/projects/<專案資料夾>/<session>.jsonl` 與同名資料夾下的 `subagents/`（`ls ~/.claude/projects/` 找出對應這個專案路徑的資料夾）。使用者糾正 agent 的地方是最重要的線索。
 
 ✅ 完成：主線整理出一份按時間排的時間軸：每張單做了幾輪、卡在哪、使用者糾正了什麼。原始紀錄留給下一步的 subagent 自己讀，不貼進主線。
 

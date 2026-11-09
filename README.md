@@ -21,7 +21,7 @@ claude plugin install jill425@jill425
 - **agent commit 後檢查格式**：`hooks/commit-check.sh` 只看 agent 剛做的 commit，不符 commit 格式就要它 amend。你自己手動的 commit 不受影響，也不裝任何 git hook。在 `env` 設 `JILL425_COMMIT_CHECK=off` 可關掉（設在專案的 `.claude/settings.local.json` 只影響那個專案）。
 - **本機檔案**：第一次用 task 時建立 `~/.claude/task-backends/projects.md`（每個專案的 task 放在哪）；用 `/jill425:rule-enforce` 新增全域規則時寫進 `~/.claude/enforcement.md`。兩者只存在你的機器上。
 
-**模型分配**：依場景決定模型，不依 session：一般實作用 sonnet，困難的單（調查、效能、跨模組、重做）用 opus，驗收刻意用跟執行者不同的模型，審查與設計的兩方也用不同模型。完整對照見契約〈模型分配〉。想改就把 `contract/models.template.md` 複製到 `~/.claude/jill425-models.md`，只寫要改的角色。
+**模型分配**：依場景決定模型，不依 session：一般實作用 sonnet，困難的單（調查、效能、跨模組、重做）用 opus，驗收刻意用跟執行者不同的模型，審查與設計的兩方也用不同模型。完整對照見契約〈模型分配〉。想改就把 `contract/models.template.md` 複製到 `~/.claude/jill425-models.md`，只寫要改的場景。
 
 **整個關掉**：`claude plugin disable jill425@jill425`。移除：`claude plugin uninstall jill425@jill425`，再視需要刪掉上面兩個本機檔案。
 
@@ -30,7 +30,7 @@ claude plugin install jill425@jill425
 - `~/.claude/settings.json` 設 `"attribution": {"commit": "", "pr": ""}`，讓 Claude 不在 commit 與 PR 加署名；沒設的話 commit 檢查會要 agent 拿掉。
 - 契約裡有兩條在工作流之外也值得守的安全規則，想全域生效就抄進你的 `~/.claude/CLAUDE.md`：
   ```
-  1. 破壞性操作先問人：rm -rf、git push --force、git reset --hard、刪分支、DB 寫入與 DDL——先說明動什麼、影響什麼，等回覆再做。
+  1. 破壞性操作先問人：rm -rf、git push --force、git reset --hard、刪分支、DB 寫入與 DDL——先說明動什麼、影響什麼，等回覆再做。（本機開發／測試用的資料庫不在此限）
   2. 正式環境只讀：要寫正式環境的資料就停下交給人；分不清是測試還是正式環境時，一律當正式環境。
   ```
 
@@ -82,7 +82,7 @@ claude plugin install jill425@jill425
 
 ## Test 方法
 - [ ] `pytest tests/test_login.py` 全綠，含帳號不存在、密碼錯誤兩個案例
-- [ ] 測試有鑑別力：拿掉實作後新增的測試全紅、放回全綠（驗法見契約〈TDD 證據〉）
+- [ ] 測試有鑑別力：拿掉實作後新增的測試全紅（斷言失敗）、放回全綠（驗法見契約〈TDD 證據〉）
 ```
 
 ## Skill 一覽
@@ -121,6 +121,8 @@ Notion 相關 skill 需要接上 Notion MCP；資料庫以名稱搜尋，找不�
 | `scripts/verify-tdd.py` | 反向驗證（pytest） |
 | `scripts/log-decision.sh` | 決策紀錄：無人值守時每個重要決定記一行 |
 | `hooks/` | agent commit 格式檢查 |
+| `skills/`、`agents/` | 各 skill 與 executor、tester 兩個 agent |
+| `tests/e2e/` | 端到端測試；改了 skill、agent 或契約之後跑一次 |
 
 ## 搭配
 
@@ -137,7 +139,7 @@ claude plugin marketplace add jill425/skills
 claude plugin install jill425@jill425
 ```
 
-Requires `git`, `bash` (macOS/Linux; WSL on Windows), and `jq`. Issue backends need `gh` (GitHub) or `glab` (GitLab).
+Requires `git`, `bash` (macOS/Linux; WSL on Windows), and `jq`. Issue backends need `gh` (GitHub) or `glab` (GitLab). `verify-tdd.py` needs Python 3.
 
 **What it changes**
 
@@ -154,7 +156,7 @@ Start with `/jill425:start`: give it a request, a bug report, or "continue", and
 
 1. `/jill425:project-init` sets up the project's `CLAUDE.md`, README, roadmap, and an architecture doc.
 2. `/jill425:task-plan` writes tickets with four sections: background, goal, approach, and objective test criteria.
-3. `/jill425:task-run` picks the next ready ticket, sends a fresh `jill425:task-executor` subagent to implement and pre-review it, then a fresh `jill425:task-tester` to verify it. The main thread only picks, dispatches, and summarizes. Failed checks are retried up to 3 times; then the ticket is marked stuck and skipped. It keeps going until no tickets are ready and ends with a summary of done, stuck, and skipped tickets.
+3. `/jill425:task-run` picks the next ready ticket, sends a fresh `jill425:task-executor` subagent to implement and pre-review it, then a fresh `jill425:task-tester` to verify it. The main thread only picks, dispatches, and summarizes. A ticket gets at most 3 verification rounds (2 retries); after that it is marked stuck and skipped. It keeps going until no tickets are ready and ends with a summary of done, stuck, and skipped tickets.
 4. Each notable decision (picking, skipping, changing course, judgment calls in verification) is logged to `jill425/decisions.tsv` in the git directory. `/jill425:task-reflect` reviews a run and proposes skill or rule edits, applied only with your approval.
 5. PRs/MRs are not merged automatically unless the project's `CLAUDE.md` says so; CI failures and review comments are left to you. A ticket that depends on an unmerged one is stacked on its branch.
 

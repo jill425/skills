@@ -1,6 +1,6 @@
 ---
 name: code-impact
-description: 改動影響面分析與攻擊式審查：找出一個改動會在別處弄壞什麼，把「它安全是因為哪個事實」用實際跑的 code 證明，再派兩個攻擊者試著把它弄壞，只留下跑得出來的發現。改到對外介面（API 的 request／response 欄位、訊息格式）、DB schema、被多處共用的模組時，送驗前由 jill425:task-run 呼叫；使用者問「這會影響到哪」「改這個會壞什麼」「blast radius」時也用。 Use for 'blast radius', 'what could this break', or before shipping a change to an API, DB schema, or shared module.
+description: 改動影響面分析與攻擊式審查：找出一個改動會在別處弄壞什麼，把「它安全是因為哪個事實」用實際跑的 code 證明，再派兩個攻擊者試著把它弄壞，只留下跑得出來的發現。改到對外介面（API 的 request／response 欄位、訊息格式）、DB schema、被多處共用的模組時，送驗前由 jill425:task-executor 叫用；使用者問「這會影響到哪」「改這個會壞什麼」「blast radius」時也用。 Use for 'blast radius', 'what could this break', or before shipping a change to an API, DB schema, or shared module.
 ---
 
 # jill425:code-impact — 改動會壞到哪
@@ -46,4 +46,4 @@ description: 改動影響面分析與攻擊式審查：找出一個改動會在�
 - **攻擊結果**：兩個攻擊者各用了哪個模型；每條保留的發現附指令、輸出、違反了什麼、哪個攻擊者找到；以及每個攻擊者丟掉幾條、為什麼。沒有保留的就寫「沒有驗證過的發現」。
 - **合併前**：最便宜能抓到真實問題的測試或重現，附腳本。
 
-從 `jill425:task-run` 送驗前呼叫時：確認的風險與保留的攻擊發現當場修掉，能便宜做成測試的就加成回歸測試，再重跑 Test 方法；證不出的照上面格式附在送驗回報（issue 後端寫進 PR／MR 描述）。
+由 `jill425:task-executor` 送驗前叫用時：確認的風險與保留的攻擊發現當場修掉，能便宜做成測試的就加成回歸測試，再重跑 Test 方法；證不出的照上面格式附在送驗回報（issue 後端寫進 PR／MR 描述）。

@@ -9,7 +9,7 @@ description: 把一再糾正 agent 的同類錯誤固化成會自動擋的檢查
 
 ## 範圍
 
-- 預設只看**當前專案**：該專案的對話紀錄 `~/.claude/projects/<slug>/*.jsonl`（slug＝專案絕對路徑把 `/` 換成 `-`）、Claude Code memory（`~/.claude/projects/<slug>/memory/`）裡使用者給過的回饋、git 歷史、PR／MR review 意見（github-issues：`gh pr list --state merged`、`gh pr view <n> --comments`；gitlab-issues：`glab mr list --merged`、`glab mr view <n> --comments`）。
+- 預設只看**當前專案**：該專案的對話紀錄 `~/.claude/projects/<專案資料夾>/*.jsonl` 與其中 `memory/` 裡使用者給過的回饋（`ls ~/.claude/projects/` 找出對應這個專案路徑的資料夾）裡使用者給過的回饋、git 歷史、PR／MR review 意見（github-issues：`gh pr list --state merged`、`gh pr view <n> --comments`；gitlab-issues：`glab mr list --merged`、`glab mr view <n> --comments`）。
 - 全域層（`~/.claude/` 的契約、skill、hook）只有使用者點名才盤。讀別的專案前先說要讀什麼。
 
 ## 步驟
