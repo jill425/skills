@@ -10,7 +10,8 @@ main() {
   main_model=${3:-sonnet}
   cd "$dir"
   start=$(date +%s)
-  claude -p --model "$main_model" --permission-mode auto --max-budget-usd "$budget" \
+  # -p 模式預設在主線最後一次動作後 10 分鐘停掉背景 subagent；實作一張單常超過 10 分鐘，所以不設上限。
+  CLAUDE_CODE_PRINT_BG_WAIT_CEILING_MS=0 claude -p --model "$main_model" --permission-mode auto --max-budget-usd "$budget" \
     '/jill425:task-run 把待辦做完。這是無人值守的執行，不要問我任何問題。' \
     > .e2e-run.log 2>&1 || echo "claude 結束碼 $?" >> .e2e-run.log
   echo "耗時 $(( $(date +%s) - start )) 秒；輸出：$dir/.e2e-run.log"

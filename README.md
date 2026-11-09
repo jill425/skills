@@ -23,6 +23,8 @@ claude plugin install jill425@jill425
 
 **模型分配**：依場景決定模型，不依 session：一般實作用 sonnet，困難的單（調查、效能、跨模組、重做）用 opus，驗收刻意用跟執行者不同的模型，審查與設計的兩方也用不同模型。完整對照見 `contract/dispatch.md`。想改就把 `contract/models.template.md` 複製到 `~/.claude/jill425-models.md`，只寫要改的場景。
 
+**無人值守用 `claude -p` 跑 `/jill425:task-run` 時**，要設 `CLAUDE_CODE_PRINT_BG_WAIT_CEILING_MS=0`。`-p` 模式預設在主線最後一次動作後 10 分鐘就停掉背景的 subagent，而 executor 實作一張單常常超過 10 分鐘，會被中途砍掉。
+
 **整個關掉**：`claude plugin disable jill425@jill425`。移除：`claude plugin uninstall jill425@jill425`，再視需要刪掉上面兩個本機檔案。
 
 **建議自己加的設定**（plugin 不替你決定）：
@@ -151,6 +153,7 @@ Requires `git`, `bash` (macOS/Linux; WSL on Windows), and `jq`. Issue backends n
 - Checks the format of commits the agent makes and asks it to amend when they don't match. Your manual commits and git config are untouched. Opt out with `JILL425_COMMIT_CHECK=off` in a settings `env` block.
 - Keeps two local files: `~/.claude/task-backends/projects.md` (where each project's tasks live) and, if you use `/jill425:rule-enforce`, `~/.claude/enforcement.md`.
 - Models are chosen per scenario, not per session: sonnet for routine implementation, opus for hard tickets (investigation, performance, cross-module, retries), and the verifier always uses a different model from the implementer. See the contract's model allocation table. Override per role in `~/.claude/jill425-models.md` (template: `contract/models.template.md`).
+- For unattended runs with `claude -p`, set `CLAUDE_CODE_PRINT_BG_WAIT_CEILING_MS=0`; otherwise `-p` stops background subagents 10 minutes after the main thread's last action, and implementing a ticket often takes longer.
 - Disable everything with `claude plugin disable jill425@jill425`.
 - Two safety rules in the contract (ask before destructive operations; production is read-only) are worth having globally. Copy them into your own `~/.claude/CLAUDE.md` if you want that; the plugin does not do it for you.
 
