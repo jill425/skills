@@ -17,11 +17,11 @@ claude plugin install jill425@jill425
 
 ## 裝了之後會改變什麼
 
-- **不常駐任何規則**：所有規則都在 `contract/task-contract.md`，只有工作流的 skill 開工時才讀。不用工作流的 session 不受影響。
+- **不常駐任何規則**：規則都在 `contract/` 底下，各 skill 開工時只讀自己需要的那幾份。不用這些 skill 的 session 不受影響。
 - **agent commit 後檢查格式**：`hooks/commit-check.sh` 只看 agent 剛做的 commit，不符 commit 格式就要它 amend。你自己手動的 commit 不受影響，也不裝任何 git hook。在 `env` 設 `JILL425_COMMIT_CHECK=off` 可關掉（設在專案的 `.claude/settings.local.json` 只影響那個專案）。
 - **本機檔案**：第一次用 task 時建立 `~/.claude/task-backends/projects.md`（每個專案的 task 放在哪）；用 `/jill425:rule-enforce` 新增全域規則時寫進 `~/.claude/enforcement.md`。兩者只存在你的機器上。
 
-**模型分配**：依場景決定模型，不依 session：一般實作用 sonnet，困難的單（調查、效能、跨模組、重做）用 opus，驗收刻意用跟執行者不同的模型，審查與設計的兩方也用不同模型。完整對照見契約〈模型分配〉。想改就把 `contract/models.template.md` 複製到 `~/.claude/jill425-models.md`，只寫要改的場景。
+**模型分配**：依場景決定模型，不依 session：一般實作用 sonnet，困難的單（調查、效能、跨模組、重做）用 opus，驗收刻意用跟執行者不同的模型，審查與設計的兩方也用不同模型。完整對照見 `contract/dispatch.md`。想改就把 `contract/models.template.md` 複製到 `~/.claude/jill425-models.md`，只寫要改的場景。
 
 **整個關掉**：`claude plugin disable jill425@jill425`。移除：`claude plugin uninstall jill425@jill425`，再視需要刪掉上面兩個本機檔案。
 
@@ -36,7 +36,7 @@ claude plugin install jill425@jill425
 
 ## 工作流
 
-不知道從哪開始就打 `/jill425:start`，把需求、錯誤訊息或「繼續」丟給它，它會選下面其中一步。
+不知道從哪開始就打 `/jill425:start`（只能手動叫用），把需求、錯誤訊息或「繼續」丟給它，它會選下面其中一步。
 
 ```
 /jill425:project-init ──> /jill425:task-plan ──> /jill425:task-run ──────────────────────────────┐
@@ -51,9 +51,9 @@ claude plugin install jill425@jill425
 - **決策紀錄**：選單、跳過、換方向、需要判斷的驗收結論，各記一行到 git 目錄下的 `jill425/decisions.tsv`，早上看得到每個決定的理由。跑完有卡住的單時，彙總會建議用 `/jill425:task-reflect` 回顧。
 - **PR／MR 不自動 merge**：完成後照團隊流程 merge；CI 紅燈與 review 留言目前由人處理，彙總會列出待處理的 PR／MR。下一張相依於還沒 merge 的單時，疊在它的分支上做。專案 `CLAUDE.md` 寫明「完成即自動 merge」時才由 agent merge。
 - **先讀 code**：建單、實作、驗收、解釋 code 之前，都先讀目前分支上實際的檔案，結論附 `檔案:行`；單上的描述、文件、記憶只當線索，對不上以 code 為準。
-- **測試要有鑑別力**：拿掉這張單的實作，新增的測試必須紅；放回必須綠。pytest 專案用 `scripts/verify-tdd.py` 自動驗，其他測試框架照契約的手動步驟驗。
+- **測試要有鑑別力**：拿掉這張單的實作，新增的測試必須紅；放回必須綠。pytest 專案用 `scripts/verify-tdd.py` 自動驗，其他測試框架照 `contract/tdd-evidence.md` 的手動步驟驗。
 
-完整規則見 `contract/task-contract.md`。
+完整規則見 `contract/task-contract.md`，以及它開頭列出的幾份分檔。
 
 ## task 放在哪
 
@@ -89,7 +89,7 @@ claude plugin install jill425@jill425
 
 | 呼叫 | 用途 |
 |---|---|
-| `/jill425:start` | 入口：依專案現況判斷要初始化專案、開需求單、開 bug 單、還是執行待辦 |
+| `/jill425:start` | 入口：依專案現況判斷要初始化專案、開需求單、開 bug 單、還是執行待辦（手動觸發） |
 | `/jill425:project-init` | 問答建立專案 CLAUDE.md、README、分階段路線圖、初版架構文件 |
 | `/jill425:task-plan` | 釐清需求，按契約開 task 單 |
 | `/jill425:task-run` | 依序執行待辦，自動接驗收與重做，完成就接下一張 |
@@ -101,12 +101,12 @@ claude plugin install jill425@jill425
 | `/jill425:code-why` | 這段 code 為什麼長這樣：查 git、PR／MR、issue 與接上的文件、聊天、錯誤追蹤，每個結論標證據強度 |
 | `/jill425:task-reflect` | 回顧一輪：從單上紀錄、決策紀錄、對話找經驗，提出 skill、契約、專案規則的修改，你同意才改 |
 | `/jill425:rule-enforce` | 同類錯第二次出現就改成會自動擋的檢查，維護對照表 |
-| `/jill425:project-harness` | 產生專案內的 `verify-<app>` skill：啟動、操作、留證據、清理 |
+| `/jill425:project-harness` | 產生專案內的 `verify-<app>` skill：啟動、操作、留證據、清理（手動觸發） |
 | `/jill425:doc-arch` | 結構化 Markdown 架構文件（`docs/arch/`） |
-| `/jill425:doc-article` | 把對話整理成技術文章，寫進 Notion |
+| `/jill425:doc-article` | 把對話整理成技術文章，寫進 Notion（手動觸發） |
 | `/jill425:diagram-mermaid` | 深色技術風 Mermaid 圖（手動觸發） |
 | `/jill425:text-polish` | 依對象與頻道潤稿 |
-| `/jill425:digest-ai` | 每日 AI 技術日報，寫進 Notion |
+| `/jill425:digest-ai` | 每日 AI 技術日報，寫進 Notion（手動觸發） |
 
 Notion 相關 skill 需要接上 Notion MCP；資料庫以名稱搜尋，找不到時會先問要寫到哪。
 
@@ -114,8 +114,12 @@ Notion 相關 skill 需要接上 Notion MCP；資料庫以名稱搜尋，找不�
 
 | 路徑 | 內容 |
 |---|---|
-| `contract/task-contract.md` | invariants、task 單格式、生命週期、驗收結果格式、開發原則、commit 格式、TDD 證據、送驗前 review |
-| `contract/backends/` | task 後端 adapter（GitHub、GitLab、本機檔）與登記表範本 |
+| `contract/task-contract.md` | 主檔：invariants、單的格式、Test 方法、執行期產出、生命週期、決策紀錄、commit 格式、後端 |
+| `contract/dispatch.md` | 派 subagent 的慣例與模型分配 |
+| `contract/principles.md` | 開發原則 |
+| `contract/ticket-kinds.md` | bug、調查、效能、原型單的額外規定 |
+| `contract/tdd-evidence.md` | 驗「測試有鑑別力」的方法 |
+| `contract/backends/` | task 後端 adapter（GitHub、GitLab、本機檔）、登記表範本、新增後端的說明 |
 | `contract/enforcement.md` | 規則 ↔ 強制方式對照表 |
 | `contract/models.template.md` | 模型分配的本機設定範本 |
 | `scripts/verify-tdd.py` | 反向驗證（pytest） |
@@ -143,7 +147,7 @@ Requires `git`, `bash` (macOS/Linux; WSL on Windows), and `jq`. Issue backends n
 
 **What it changes**
 
-- Nothing is injected into every session. All rules live in `contract/task-contract.md` and are read only when a workflow skill starts.
+- Nothing is injected into every session. Rules live under `contract/`, and each skill reads only the files it needs when it starts.
 - Checks the format of commits the agent makes and asks it to amend when they don't match. Your manual commits and git config are untouched. Opt out with `JILL425_COMMIT_CHECK=off` in a settings `env` block.
 - Keeps two local files: `~/.claude/task-backends/projects.md` (where each project's tasks live) and, if you use `/jill425:rule-enforce`, `~/.claude/enforcement.md`.
 - Models are chosen per scenario, not per session: sonnet for routine implementation, opus for hard tickets (investigation, performance, cross-module, retries), and the verifier always uses a different model from the implementer. See the contract's model allocation table. Override per role in `~/.claude/jill425-models.md` (template: `contract/models.template.md`).
@@ -152,7 +156,7 @@ Requires `git`, `bash` (macOS/Linux; WSL on Windows), and `jq`. Issue backends n
 
 **Workflow**
 
-Start with `/jill425:start`: give it a request, a bug report, or "continue", and it routes to the right step below.
+Start with `/jill425:start` (manual only): give it a request, a bug report, or "continue", and it routes to the right step below.
 
 1. `/jill425:project-init` sets up the project's `CLAUDE.md`, README, roadmap, and an architecture doc.
 2. `/jill425:task-plan` writes tickets with four sections: background, goal, approach, and objective test criteria.
@@ -166,7 +170,7 @@ Tasks can live in GitHub issues, GitLab issues (possibly in a different repo fro
 
 **Read the code first**: every role reads the actual files on the current branch before explaining, changing, or judging code, and cites `file:line`. Ticket descriptions, docs, and memory are hints that may be stale.
 
-**Tests must discriminate**: with the ticket's implementation removed, every new test must fail; with it restored, every test must pass. `scripts/verify-tdd.py` checks this automatically for pytest projects; other frameworks follow a manual procedure in `contract/task-contract.md`.
+**Tests must discriminate**: with the ticket's implementation removed, every new test must fail; with it restored, every test must pass. `scripts/verify-tdd.py` checks this automatically for pytest projects; other frameworks follow a manual procedure in `contract/tdd-evidence.md`.
 
 ## 授權
 

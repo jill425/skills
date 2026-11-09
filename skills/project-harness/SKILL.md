@@ -12,7 +12,7 @@ disable-model-invocation: true
 
 1. **從 repo 問，不先問人**：只問 code 裡看不到的。
    - **介面**：使用者實際碰的是什麼——網頁、App（Flutter 等）、API、CLI。有多個就選主要的，其他記下。
-   - **啟動**：專案自己寫的啟動指令（`README`、`package.json` scripts、`Makefile`、`docker compose`），port、環境變數、種子資料、登入方式。只啟動本機，不指向任何共用的測試或正式環境（契約 invariant 5）。
+   - **啟動**：專案自己寫的啟動指令（`README`、`package.json` scripts、`Makefile`、`docker compose`），port、環境變數、種子資料、登入方式。只啟動本機的 app；共用的測試與正式環境一律只讀。
    - **驅動**：先找 repo 既有的工具（Playwright／Cypress、`integration_test`、HTTP client 測試），沒有才選通用做法：網頁用 Playwright，Flutter 用 `integration_test`／`flutter drive`，API 用 `curl`／`httpx`，CLI 用 PTY。
    - **觀察**：能拿到什麼證據——截圖、回應內容、log、exit code、DB 狀態。
    - **隔離**：能不能同時開兩份（port、資料目錄）。不行就在產出裡寫明，寧可拒絕也不要操作使用者正在用的那份。

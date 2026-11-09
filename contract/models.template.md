@@ -1,6 +1,6 @@
 # jill425 模型分配
 
-複製到 `~/.claude/jill425-models.md` 再改。只寫要改的場景，沒寫的照契約〈模型分配〉的預設。
+複製到 `~/.claude/jill425-models.md` 再改。只寫要改的場景，沒寫的照 `dispatch.md`〈模型分配〉的預設。
 
 格式：`場景: 模型 [effort]`，一行一個。
 - 模型：`opus`、`sonnet`、`haiku`、`fable`，或 `inherit`（跟 session 同一個）。

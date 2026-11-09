@@ -7,7 +7,7 @@ description: 回顧：一輪 task-run 跑完，或使用者要回顧這次學到
 
 一次性的事件不算經驗。要找的是：下次遇到同類工作時，改了某個 skill、契約或專案規則就能做得更好的地方。
 
-派 subagent 照契約〈派 subagent 的慣例〉與〈模型分配〉（`${CLAUDE_PLUGIN_ROOT}/contract/task-contract.md`）。
+派 subagent 照 `${CLAUDE_PLUGIN_ROOT}/contract/dispatch.md`。
 
 ## 1. 收證據
 

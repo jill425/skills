@@ -7,7 +7,7 @@ description: 改動影響面（blast radius）：改到 API 欄位、DB schema �
 
 列出呼叫端不是重點，grep 一秒就有。要找的是 grep 看不到的破壞：回傳的 JSON 欄位、DB 欄位、訊息格式、另一個語言讀同一份資料、feature flag、三層以外的下游。
 
-一篇聽起來對的分析不管真假讀起來都一樣有說服力，所以不交分析，交證明：找出整個改動安全所依賴的那一兩個事實，用跑起來的 code 證明它。每個事實標契約的證據等級（推測／指認／推演／跑過／重現），能推到「跑過」就推。
+一篇聽起來對的分析不管真假讀起來都一樣有說服力，所以不交分析，交證明：找出整個改動安全所依賴的那一兩個事實，用跑起來的 code 證明它。每個事實標證據等級（推測／指認／推演／跑過／重現，定義在 `${CLAUDE_PLUGIN_ROOT}/contract/task-contract.md`〈執行期產出〉），10 分鐘內寫得出腳本驗證的推到「跑過」。
 
 ## 步驟
 
@@ -25,7 +25,7 @@ description: 改動影響面（blast radius）：改到 API 欄位、DB schema �
 5. **證明關鍵事實**：寫一個呼叫真實 code（或對本機開發資料庫查真實資料）的小腳本或測試，跑它，貼輸出。放在 scratchpad，不進 repo，除非它值得留成正式測試。
    ✅ 完成：關鍵事實到「跑過」或「重現」，或明寫「未證明」與卡在哪。
 
-6. **攻擊**：同時派兩個 subagent，各自試著把這個改動弄壞。模型照契約〈模型分配〉的「攻擊者 A」「攻擊者 B」（`${CLAUDE_PLUGIN_ROOT}/contract/task-contract.md`）；預設兩人用不同模型，不同模型的盲點不同，抓到的 bug 也不同。每個攻擊者在自己的 worktree 工作：`git worktree add --detach <scratchpad>/atk-<n> HEAD`，再把還沒 commit 的改動帶過去（`git diff HEAD --binary | git -C <scratchpad>/atk-<n> apply`，未追蹤的新檔直接複製）。兩個攻擊者分工：
+6. **攻擊**：同時派兩個 subagent，各自試著把這個改動弄壞。模型照 `${CLAUDE_PLUGIN_ROOT}/contract/dispatch.md`〈模型分配〉的攻擊者 A／B；預設兩人用不同模型，不同模型的盲點不同，抓到的 bug 也不同。每個攻擊者在自己的 worktree 工作：`git worktree add --detach <scratchpad>/atk-<n> HEAD`，再把還沒 commit 的改動帶過去（`git diff HEAD --binary | git -C <scratchpad>/atk-<n> apply`，未追蹤的新檔直接複製）。兩個攻擊者分工：
    - **攻擊者 A：邊界與異常輸入**。空值、極端值、格式錯誤、權限不足、重複呼叫、同時呼叫。
    - **攻擊者 B：整合與狀態**。呼叫端與下游、DB schema 與既有資料、序列化格式、重試與部分失敗、跟其他模組的約定。
 

@@ -41,9 +41,9 @@ gh issue comment <n> -R <task 位置> --body-file <scratchpad>/result.md
 | 結論 | `## 結論`（調查、效能、原型單），最新一則為準 |
 | 驗收結果 | `## 驗收結果` |
 
-契約六種情況以外不寫執行備註——**照單做的部分不另記一則**，本後端的軌跡是綁在 issue 編號上的分支、PR 與 commit，要看改了什麼去讀 diff。
+本後端的軌跡是綁在 issue 編號上的分支、PR 與 commit，改了什麼看 diff。
 
-驗收結果 comment 是「哪幾條過了」的單一事實來源；body 的 checkbox 留給人自己勾。多輪重做時每輪各追加一則，最新那則為準。
+哪幾條過了以驗收結果 comment 為準；body 的 checkbox 留給人自己勾。多輪重做時每輪各追加一則，最新那則為準。
 
 ## 4. 生命週期怎麼表示
 
@@ -61,7 +61,7 @@ gh issue comment <n> -R <task 位置> --body-file <scratchpad>/result.md
 
 ## 5. 完成是什麼動作
 
-驗收全條通過，驗收角色追加標明「完成」的驗收結果 comment，不需人再確認。PR 照團隊流程 merge。專案 CLAUDE.md 寫明「完成即自動 merge」時，執行角色在 checks 全綠後 `gh pr merge <pr> --squash`；有衝突或 checks 紅燈就不 merge，記在單上並視為卡住。
+驗收全條通過時，驗收者追加標明「完成」的驗收結果 comment。設定自動 merge 時（見契約〈生命週期〉），checks 全綠後用 `gh pr merge <pr> --squash`；有衝突或 checks 紅燈時不 merge，記在單上並當作卡住。
 
 **相依的前一張已完成、但 PR 還沒 merge**：新分支從前一張的分支切出，PR 的 base 設為前一張的分支（`--base <前一張的分支>`）；前一張 merge 後，把 base 改回整合分支：`gh pr edit <pr> --base <整合分支>`。
 
