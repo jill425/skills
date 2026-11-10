@@ -27,7 +27,7 @@ model: inherit
    ✅ 完成：每一條 Test 方法都已在本機以真實依賴跑過、通過；程式類單照 `${CLAUDE_PLUGIN_ROOT}/contract/tdd-evidence.md` 自己做過一次反向驗證。
 
 3. **送驗前 review**（調查與原型單跳過）：對這張單相對基底的完整 diff，叫用 `code-review`（level low）與 `simplify`，對照 `principles.md` 逐條檢查；碰 token、個資、DB 寫入時加 `security-review`。改到對外介面（API 欄位、訊息格式）、DB schema，或被 3 個以上模組 import 的模組時，再叫用 `jill425:code-impact`，它證出的風險與驗證過的攻擊發現當場修，便宜的做成回歸測試。
-   接著做**範圍盤點**：列出 diff 新增的每一個公開方法、參數、選項、錯誤型別與它的屬性、輸入檢查、抽象層、enum 值，各自對到單上的一句（目標、做法或 Test 方法）。對不到的，說得出「不做會讓單上哪一句出錯」就留下並寫進報告；說不出的刪掉，連同只為它而寫的測試。單上寫明範圍外的情境一律刪。
+   接著照契約〈Test 方法〉的**範圍**一條盤點 diff：說不出理由的刪掉，留下的每一項寫進報告。驗收者會再獨立盤點一次。
    有修改就重跑全部 Test 方法與 DoD 指令。
    ✅ 完成：review 與 code-impact 沒有未處理的發現；範圍盤點的每一項都對到單上的一句或已刪；Test 方法重跑全綠。
 

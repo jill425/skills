@@ -25,9 +25,11 @@ def checks(root):
     for n in TICKETS:
         s, text = status(root, n)
         yield f"單 {n} 完成", s in {"Verified", "Passed"}, s
+        result = re.search(r"^## 驗收結果\n(.*?)(?=^## |\Z)", text, re.M | re.S)
+        result = result.group(1) if result else ""
         if n != 4:
-            result = re.search(r"^## 驗收結果\n(.*?)(?=^## |\Z)", text, re.M | re.S)
-            yield f"單 {n} 驗收結果有反向驗證的證據", bool(result and re.search(r"verify-tdd|鑑別|拿掉實作", result.group(1))), ""
+            yield f"單 {n} 驗收結果有反向驗證的證據", bool(re.search(r"verify-tdd|鑑別|拿掉實作", result)), ""
+        yield f"單 {n} 驗收結果有範圍判定", bool(re.search(r"^- \[[x ]\] 範圍", result, re.M)), ""
 
     subjects = sh(root, "git", "log", "--reverse", "--format=%s").stdout.splitlines()
     bad = [s for s in subjects if not COMMIT.match(s) and not s.startswith("Merge")]

@@ -48,7 +48,7 @@ claude plugin install jill425@jill425
 ```
 
 - **持續推進**：`/jill425:task-run` 預設一張完成就接下一張（相依已完成者優先、編號小的優先），直到沒有可做的單，最後列出完成、卡住、跳過的單。指名單張時只做那張。
-- **做事與驗收分離**：實作交給 `jill425:task-executor`，驗收交給隔離的 `jill425:task-tester`，只依單上的 `## Test 方法` 判定。每張單、每一輪都派新的 subagent，主線只負責選單、派工與彙總，連跑一晚 context 也不會越堆越長。
+- **做事與驗收分離**：實作交給 `jill425:task-executor`，驗收交給隔離的 `jill425:task-tester`，依單上的 `## Test 方法` 判定，並另查 code 有沒有超出單的範圍。每張單、每一輪都派新的 subagent，主線只負責選單、派工與彙總，連跑一晚 context 也不會越堆越長。
 - **卡住就跳過**：驗收 3 輪仍未過、驗收標準需要人確認、或需要人做的破壞性操作，這張停下並記錄原因，接著做其他不相依的單。
 - **決策紀錄**：選單、跳過、換方向、需要判斷的驗收結論，各記一行到 git 目錄下的 `jill425/decisions.tsv`，早上看得到每個決定的理由。跑完有卡住的單時，彙總會建議用 `/jill425:task-reflect` 回顧。
 - **PR／MR 不自動 merge**：完成後照團隊流程 merge；CI 紅燈與 review 留言目前由人處理，彙總會列出待處理的 PR／MR。下一張相依於還沒 merge 的單時，疊在它的分支上做。專案 `CLAUDE.md` 寫明「完成即自動 merge」時才由 agent merge。
@@ -96,7 +96,7 @@ claude plugin install jill425@jill425
 | `/jill425:task-plan` | 釐清需求，按契約開 task 單 |
 | `/jill425:task-run` | 依序執行待辦，自動接驗收與重做，完成就接下一張 |
 | `jill425:task-executor`（agent） | 把一張單從執行中做到待測：TDD 實作、送驗前 review、轉待測，交回固定格式的報告 |
-| `jill425:task-tester`（agent） | 隔離驗收，只依 `## Test 方法` 判定 |
+| `jill425:task-tester`（agent） | 隔離驗收，依 `## Test 方法` 與範圍判定 |
 | `/jill425:code-impact` | 改動會壞到哪：證明安全的理由，再派兩個不同模型的攻擊者試著弄壞它，只留跑得出來的發現 |
 | `/jill425:code-design` | 跨模組的改動先設計：從呼叫端用法推出型別與介面，比較兩個不同模型畫的方案，對照設計警訊選一個再實作 |
 | `/jill425:code-how` | 這段 code 怎麼運作：元件、流程、東西在哪、坑；範圍大時派探索者分頭查再整合 |
