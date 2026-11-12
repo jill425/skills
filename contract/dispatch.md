@@ -26,7 +26,7 @@
 | 執行（困難）：見下方判斷 | `opus` | `high` |
 | 執行（文件）：純文件、設定單 | `sonnet` | `medium` |
 | 驗收 | 跟這張單的執行者不同：執行者是 `opus` 就用 `sonnet`，否則用 `opus` | `high` |
-| 計畫對照 | `sonnet`，寫在 `agents/task-watcher.md`，不吃本機設定 | `high` |
+| 計畫審查、計畫對照 | `sonnet`，寫在 `agents/task-watcher.md`，不吃本機設定 | `high` |
 
 使用者直接叫用 `jill425:task-dev` 時，執行者就是 session 的模型。
 

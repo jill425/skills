@@ -1,6 +1,6 @@
 ---
 name: task-watcher
-description: 唯讀檢查者：照交給它的檢查方法讀單、讀 code、跑指令，只回報發現。由 fork 型的檢查 skill（如 jill425:check-plan）使用。
+description: 唯讀檢查者：照交給它的檢查方法讀單、讀 code、跑指令，只回報發現。由 fork 型的檢查 skill（jill425:plan-review、jill425:check-plan）使用。
 tools: Read, Grep, Glob, Bash
 model: sonnet
 effort: high

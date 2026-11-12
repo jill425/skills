@@ -51,6 +51,7 @@ claude plugin install jill425@jill425
 ```
 
 - **兩種跑法，同一套步驟**：`/jill425:task-dev` 在你面前做一張單；`/jill425:task-multi-run` 依序把待辦派出去（相依已完成者優先、編號小的優先），每張由一個 subagent 照 `task-dev` 做，主線只選單、選模型、轉達問題與彙總，連跑一晚 context 也不會越堆越長。
+- **落單前審查**：`/jill425:task-plan` 寫完草稿後，三個審查者同時從資料、影響、驗收三個面向對照 code，查得到答案的缺口直接補進單，要你決定的一次問完才落單。
 - **開發中就檢查**：每個 commit 後在背景跑專案的 DoD 指令；每個切片結束，`jill425:check-plan` 在背景拿 diff 跟單比對，列出單上沒要求的 code 與還沒寫的要求。
 - **做事與驗收分離**：驗收交給隔離的 `jill425:task-tester`，依單上的 `## Test 方法` 判定，用跟執行者不同的模型；沒過就由同一個執行者原地修，最多 3 輪。單上沒要求的 code 不影響判定，列出來由你決定刪或留。
 - **需要你決定就停下來問**：破壞性操作、會改變行為或資料語意的發現、驗收 3 輪仍未過。無人值守時沒有人能回答，這張單記為卡住，連同相依它與受同一個決定影響的單一起跳過。
@@ -88,7 +89,7 @@ claude plugin install jill425@jill425
 
 ## Test 方法
 - [ ] `pytest tests/test_login.py` 全綠，含帳號不存在、密碼錯誤兩個案例
-- [ ] 測試有鑑別力：拿掉實作後新增的測試全紅（斷言失敗）、放回全綠（驗法見契約〈TDD 證據〉）
+- [ ] 測試有鑑別力：拿掉實作後新增的測試全紅（斷言失敗）、放回全綠（驗法見 tdd-evidence.md）
 ```
 
 ## Skill 一覽
@@ -100,9 +101,10 @@ claude plugin install jill425@jill425
 | `/jill425:task-plan` | 釐清需求，按契約開 task 單 |
 | `/jill425:task-dev` | 把一張單做到完成：切片開發、開發中檢查、收尾 review、派驗收、未過原地修 |
 | `/jill425:task-multi-run` | 依序把待辦派出去做，轉達需要你決定的問題，完成就接下一張 |
+| `/jill425:plan-review` | 計畫審查：落單前拿草稿對照 code，從資料、影響、驗收三個面向找缺口與要你回答的問題 |
 | `/jill425:check-plan` | 計畫對照：拿單和 commit 比對，在背景跑，只回報 |
 | `jill425:task-tester`（agent） | 隔離驗收，依 `## Test 方法` 判定，另列出單上沒要求的 code |
-| `jill425:task-watcher`（agent） | 唯讀檢查者，`check-plan` 用它執行 |
+| `jill425:task-watcher`（agent） | 唯讀檢查者，`plan-review` 與 `check-plan` 用它執行 |
 | `/jill425:code-impact` | 改動會壞到哪：證明安全的理由，再派兩個不同模型的攻擊者試著弄壞它，只留跑得出來的發現 |
 | `/jill425:code-design` | 跨模組的改動先設計：從呼叫端用法推出型別與介面，比較兩個不同模型畫的方案，對照設計警訊選一個再實作 |
 | `/jill425:code-how` | 這段 code 怎麼運作：元件、流程、東西在哪、坑；範圍大時派探索者分頭查再整合 |
