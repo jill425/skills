@@ -83,7 +83,7 @@ def checks(root):
     rows = decisions.read_text().splitlines()[1:] if decisions.exists() else []
     yield "決策紀錄存在且有內容", bool(rows), f"{len(rows)} 筆"
     yield "決策紀錄提到單 3", any(re.search(r"(^|\t)#?3(\t|$)", r) for r in rows), ""
-    yield "鎖檔已刪除", not (gitdir / "jill425" / "task-run.lock").exists(), ""
+    yield "鎖檔已刪除", not list((gitdir / "jill425").glob("*.lock")), ""
 
     dispatches = agent_dispatches(root)
     yield "執行者依場景指定了模型", bool(dispatches) and all(d[1] for d in dispatches), str(dispatches)

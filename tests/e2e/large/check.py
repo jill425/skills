@@ -50,7 +50,7 @@ def checks(root):
 
     gitdir = Path(sh(root, "git", "rev-parse", "--git-common-dir").stdout.strip())
     gitdir = gitdir if gitdir.is_absolute() else root / gitdir
-    yield "鎖檔已刪除", not (gitdir / "jill425" / "task-run.lock").exists(), ""
+    yield "鎖檔已刪除", not list((gitdir / "jill425").glob("*.lock")), ""
     dirty = [l for l in sh(root, "git", "status", "--porcelain").stdout.splitlines() if not l[3:].startswith(("tasks/", ".e2e-run.log"))]
     yield "工作目錄沒有遺留未 commit 的 code", not dirty, "; ".join(dirty[:3])
 
