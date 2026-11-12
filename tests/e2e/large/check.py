@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""檢查大場地（shop）跑完 task-run 後留下的狀態。設計品質不在這裡判，交給獨立審查。
+"""檢查大場地（shop）跑完 task-multi-run 後留下的狀態。設計品質不在這裡判，交給獨立審查。
 
 用法：check.py <場地目錄>；全部通過 exit 0，否則 exit 1。
 """
@@ -29,7 +29,7 @@ def checks(root):
         result = result.group(1) if result else ""
         if n != 4:
             yield f"單 {n} 驗收結果有反向驗證的證據", bool(re.search(r"verify-tdd|鑑別|拿掉實作", result)), ""
-        yield f"單 {n} 驗收結果有範圍判定", bool(re.search(r"^- \[[x ]\] 範圍", result, re.M)), ""
+        yield f"單 {n} 驗收結果盤點了單上沒要求的 code", "單上沒要求的 code" in result, ""
 
     subjects = sh(root, "git", "log", "--reverse", "--format=%s").stdout.splitlines()
     bad = [s for s in subjects if not COMMIT.match(s) and not s.startswith("Merge")]

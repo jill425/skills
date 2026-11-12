@@ -1,18 +1,20 @@
 #!/usr/bin/env bash
-# 在測試場地用非互動模式跑一輪 task-run，輸出存到 <場地>/.e2e-run.log。
+# 在測試場地用非互動模式跑一輪 task-multi-run，輸出存到 <場地>/.e2e-run.log。
 # 用法：run.sh <場地目錄> [花費上限美元，預設 30] [主線模型，預設 sonnet]
-# 主線只選單、派工、彙總，用 sonnet；executor 與 tester 的模型由契約〈模型分配〉依場景決定。
+# 主線只選單、派工、彙總，用 sonnet；執行者與驗收者的模型由契約〈模型分配〉依場景決定。
+# 用 --plugin-dir 載入這個 repo 的工作目錄，測到的是還沒安裝的改動。
 # 主體包在函式裡、最後才呼叫：bash 會先讀完整個函式再執行，跑到一半改這個檔也不會執行到殘缺的指令。
 set -euo pipefail
 main() {
   dir=$(cd "${1:?用法：run.sh <場地目錄> [上限]}" && pwd)
   budget=${2:-30}
   main_model=${3:-sonnet}
+  plugin=$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)
   cd "$dir"
   start=$(date +%s)
   # -p 模式預設在主線最後一次動作後 10 分鐘停掉背景 subagent；實作一張單常超過 10 分鐘，所以不設上限。
-  CLAUDE_CODE_PRINT_BG_WAIT_CEILING_MS=0 claude -p --model "$main_model" --permission-mode auto --max-budget-usd "$budget" \
-    '/jill425:task-run 把待辦做完。這是無人值守的執行，不要問我任何問題。' \
+  CLAUDE_CODE_PRINT_BG_WAIT_CEILING_MS=0 claude -p --plugin-dir "$plugin" --model "$main_model" --permission-mode auto --max-budget-usd "$budget" \
+    '/jill425:task-multi-run 把待辦做完。這是無人值守的執行，不要問我任何問題。' \
     > .e2e-run.log 2>&1 || echo "claude 結束碼 $?" >> .e2e-run.log
   echo "耗時 $(( $(date +%s) - start )) 秒；輸出：$dir/.e2e-run.log"
 }

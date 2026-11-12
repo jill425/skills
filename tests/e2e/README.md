@@ -1,6 +1,6 @@
 # 端到端測試
 
-用一個小專案實際跑一輪 `/jill425:task-run`，檢查留下的結果是否符合工作流的規則。改了 skill、agent 或契約之後跑一次，確認沒改壞。
+用一個小專案實際跑一輪 `/jill425:task-multi-run`，檢查留下的結果是否符合工作流的規則。改了 skill、agent 或契約之後跑一次，確認沒改壞。
 
 ## 場地
 
@@ -24,7 +24,7 @@ tests/e2e/check.py "$d"
 tests/e2e/cleanup.sh "$d"
 ```
 
-`run.sh` 用 `--permission-mode auto` 非互動執行，主線用 sonnet；executor 與 tester 的模型由契約〈模型分配〉依場景決定。通常要 15–40 分鐘；花費主要在 executor、tester、code-review 這些 subagent。
+`run.sh` 用 `--permission-mode auto` 非互動執行，主線用 sonnet；執行者與驗收者的模型由契約〈模型分配〉依場景決定。通常要 15–40 分鐘；花費主要在執行者、驗收者、code-review 這些 subagent。
 
 ## 大場地
 
