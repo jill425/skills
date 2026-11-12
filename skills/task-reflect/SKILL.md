@@ -1,6 +1,6 @@
 ---
 name: task-reflect
-description: 回顧：一輪 task-run 跑完，或使用者要回顧這次學到什麼時，整理出 skill、契約或專案規則的修改建議，經同意才改。
+description: 回顧：一輪 task-multi-run 跑完，或使用者要回顧這次學到什麼時，整理出 skill、契約或專案規則的修改建議，經同意才改。
 ---
 
 # jill425:task-reflect — 回顧這一輪

@@ -36,7 +36,7 @@ task 契約（`${CLAUDE_PLUGIN_ROOT}/contract/task-contract.md`）對所有用�
 7. **登記 task 後端**：把步驟 2 問到的後端與 task 位置寫進 `~/.claude/task-backends/projects.md`（不存在就從契約指定的範本建立；以 `git remote get-url origin` 為鍵；無 remote 用本機路徑）。登記表已有該專案就更新那一列、備註保留；專案已推上 remote 但表上仍是本機路徑，就把鍵換成 remote。
    ✅ 完成：登記表有且只有一列對應此專案，且對應的 adapter 檔讀得到。
 
-8. **初版架構文件**：架構定案後，用 `jill425:doc-arch` 產出結構化 Markdown 存 `docs/arch/`；後續結構變動由 `jill425:task-executor` 實作時同步更新。
+8. **初版架構文件**：架構定案後，用 `jill425:doc-arch` 產出結構化 Markdown 存 `docs/arch/`；後續結構變動由 `jill425:task-dev` 實作時同步更新。
    ✅ 完成：文件反映定案的分層與資料流，與 CLAUDE.md 一致。
 
 9. **交接**：提示使用者下一步用 `jill425:task-plan` 把第一階段開成單；專案有畫面或對外服務的，walking skeleton 完成後跑 `jill425:project-harness` 產生專案的驅動與留證工具，之後的單才能引用它驗收。

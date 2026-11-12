@@ -18,7 +18,7 @@
 | `scripts/log-decision.sh`、契約〈決策紀錄〉 | `show-me-your-work` |
 | `skills/rule-enforce` | `correct`、`principle-encode-lessons-in-structure` |
 | `skills/project-harness` | `create-verification-skill` |
-| `skills/task-run` 的「質疑前提」、bug 類單的找根因方式 | `principle-attack-the-premise`、bug-fix playbook |
+| `skills/task-multi-run` 的「質疑前提」、bug 類單的找根因方式 | `principle-attack-the-premise`、bug-fix playbook |
 | `contract/task-contract.md` 的證據等級 | `blast-radius` |
 | `contract/task-contract.md`〈開發原則〉的最小改動、先減再加、改 API 就改完呼叫端、驗證放在邊界、讓型別擋錯、跑幾次結果都一樣、體驗優先、測行為不測實作、做工具不手工 | `principle-laziness-protocol`、`principle-subtract-before-you-add`、`principle-migrate-callers-then-delete-legacy-apis`、`principle-boundary-discipline`、`principle-type-system-discipline`、`principle-make-operations-idempotent`、`principle-experience-first`、`principle-test-behavior-not-implementation`、`principle-build-the-lever`、`principle-model-the-domain`、`principle-minimize-reader-load`、`principle-foundational-thinking`、`principle-separate-before-serializing-shared-state`、`principle-redesign-from-first-principles`、`principle-exhaust-the-design-space`、`principle-outcome-oriented-execution`、`principle-explain-the-number` |
 
