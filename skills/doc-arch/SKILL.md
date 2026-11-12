@@ -1,6 +1,6 @@
 ---
 name: doc-arch
-description: 產出「結構化 Markdown 架構文件」（以標題、表格、清單、必要時 ASCII 示意呈現系統結構、分層、資料流、模組依賴），存到 docs/arch/。這是預設的架構文件方式；要 Mermaid 圖時手動用 jill425:diagram-mermaid。當使用者要畫或更新架構圖、分層圖、資料流、系統結構、依賴關係，或說「畫一張圖」「visualize」「產出架構文件」時使用。Use for architecture docs, layer diagrams, data flow, or module dependency write-ups.
+description: 架構文件：要寫或更新系統結構、分層、資料流、模組依賴的說明時使用。
 ---
 
 # jill425:doc-arch — 結構化 Markdown 架構文件
@@ -17,7 +17,7 @@ description: 產出「結構化 Markdown 架構文件」（以標題、表格、
 ## 事實來源原則
 
 系統架構的事實來源始終是 **code 與專案 CLAUDE.md**；本文件是衍生視圖，跟著它們走。
-產文件前先讀 code 與 CLAUDE.md 對齊現況，不要憑空描述，也不要照抄舊版文件或記憶（契約 invariant 6）；舊文件跟 code 對不上時以 code 為準。結構有變時由 `jill425:task-executor` 在實作時同步更新對應文件。
+產文件前先讀 code 與 CLAUDE.md 對齊現況，**以 code 為準**：舊版文件與記憶只當線索，對不上時照 code 寫。結構有變時由 `jill425:task-dev` 在實作時同步更新對應文件。
 
 ## 表達手法（擇合適者組合）
 

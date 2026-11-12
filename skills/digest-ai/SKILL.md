@@ -1,6 +1,7 @@
 ---
 name: digest-ai
-description: AI 日報：撈「當天與前一天」新發布的 AI 技術內容，大神 X 推文與一手文章優先，另含模型發布、研究論文、架構設計、GitHub 熱門 repo、大神影片、資安動態、產業動態，寫進 Notion「AI 技術日報彙整」當天一頁。使用者明確要「AI 日報」「每日 AI 彙整」，或排程觸發時使用；只是隨口問今天的 AI 或資安新聞時直接回答，不跑本 skill、不寫 Notion。Use only when the user asks for the daily AI digest.
+description: 產出今天的 AI 技術日報，寫進 Notion「AI 技術日報彙整」。
+disable-model-invocation: true
 ---
 
 # AI 技術日報
@@ -35,7 +36,7 @@ description: AI 日報：撈「當天與前一天」新發布的 AI 技術內容
 
 X 頁面多半抓不到全文，照這個順序取得：
 
-1. 搜尋「大神名 / handle + 主題 + 日期」（搜尋工具有分模式時，選較徹底、結果較新的模式）。
+1. 搜尋「大神名 / handle + 主題 + 日期」。
 2. 抓得到的 x.com 連結用 WebFetch 確認日期與內容。
 3. 抓不到時走轉述推文的一手管道：Simon Willison 部落格、大神自己的 blog／newsletter、新聞稿引用的原推；有可信轉述且日期可確認才收，並標註「經 XX 轉述」。
 
@@ -52,6 +53,8 @@ X 頁面多半抓不到全文，照這個順序取得：
 **完成**：時間窗已寫出；知道今天是新建或更新；手上有昨天已收錄 URL 清單（或確認昨天無日報）。
 
 ### 1. 撈取
+
+所有搜尋都用較徹底、結果較新的模式（搜尋工具有分模式時）。
 
 先讀 `references/sources.md`、`references/research-sources.md`、`references/security-sources.md`，再依類型表優先序撈。各來源檔寫了該區的撈法（索引頁、首頁抓取、查詢範本），照著做。
 

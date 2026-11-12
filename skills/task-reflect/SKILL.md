@@ -1,13 +1,13 @@
 ---
 name: task-reflect
-description: 回顧：一輪 task-run 跑完、或一段工作結束後，從單上的紀錄、決策紀錄、git 歷史與對話紀錄找出值得留下的經驗，整理成「建議怎麼改 skill、契約或專案規則」的清單，使用者同意的才改。使用者說「回顧」「reflect」「這次學到什麼」，或 task-run 彙總建議時使用。同一種錯重複出現改用 jill425:rule-enforce。Use after a run to turn lessons into proposed skill or rule edits, applied only with approval.
+description: 回顧：一輪 task-multi-run 跑完，或使用者要回顧這次學到什麼時，整理出 skill、契約或專案規則的修改建議，經同意才改。
 ---
 
 # jill425:task-reflect — 回顧這一輪
 
 一次性的事件不算經驗。要找的是：下次遇到同類工作時，改了某個 skill、契約或專案規則就能做得更好的地方。
 
-派 subagent 照契約〈派 subagent 的慣例〉與〈模型分配〉（`${CLAUDE_PLUGIN_ROOT}/contract/task-contract.md`）。
+派 subagent 照 `${CLAUDE_PLUGIN_ROOT}/contract/dispatch.md`。
 
 ## 1. 收證據
 
@@ -16,7 +16,7 @@ description: 回顧：一輪 task-run 跑完、或一段工作結束後，從單
 - **決策紀錄**：`$(git rev-parse --git-common-dir)/jill425/decisions.tsv` 裡這一輪的列。
 - **單上的紀錄**：這一輪碰過的每張單，每輪驗收結果的現象與修復、執行備註（推翻假設、範圍變動、驗收標準需重新確認）、卡住原因。
 - **git**：這一輪的 commits、revert、緊接在 feat 後面的 fix。
-- **對話紀錄**：本 session 的 `~/.claude/projects/<slug>/<session>.jsonl` 與同名資料夾下的 `subagents/`（slug＝專案絕對路徑把 `/` 和 `.` 換成 `-`）。使用者糾正 agent 的地方是最重要的線索。
+- **對話紀錄**：本 session 的 `~/.claude/projects/<專案資料夾>/<session>.jsonl` 與同名資料夾下的 `subagents/`（`ls ~/.claude/projects/` 找出對應這個專案路徑的資料夾）。使用者糾正 agent 的地方是最重要的線索。
 
 ✅ 完成：主線整理出一份按時間排的時間軸：每張單做了幾輪、卡在哪、使用者糾正了什麼。原始紀錄留給下一步的 subagent 自己讀，不貼進主線。
 
@@ -30,7 +30,9 @@ description: 回顧：一輪 task-run 跑完、或一段工作結束後，從單
 
 三個 brief 共同的要求：
 
-> 不要修改任何檔案。每條發現回報：發現、證據（決策紀錄的哪一列、哪張單第幾輪、對話的哪一段）、建議改哪個檔、具體怎麼改（寫到句子）、預期效果。沒有證據的不要報；只發生一次、找不到通則的不要報。沒有發現也是有效結果。
+> 全程唯讀。每條發現回報：發現、證據（決策紀錄的哪一列、哪張單第幾輪、對話的哪一段）、建議改哪個檔、具體怎麼改（寫到句子）、預期效果。只報有證據、會重複發生的經驗；沒有發現也是有效結果。
+
+✅ 完成：三個審視者都回報了，或回報沒有發現。
 
 ## 3. 派彙整者
 
@@ -43,11 +45,15 @@ description: 回顧：一輪 task-run 跑完、或一段工作結束後，從單
 - **轉 rule-enforce**：同一種錯已經出現第二次，或能用 lint、hook、測試直接擋的，交給 `jill425:rule-enforce`。
 - **不採納**：證據不足、一次性、或跟契約衝突，各附理由。
 
-不要修改任何檔案。
+彙整者全程唯讀。
+
+✅ 完成：每條發現都歸進三類之一，採納候選都有落點與具體改法。
 
 ## 4. 過目
 
 把三類清單完整列給使用者，每條附證據與具體改法。使用者挑要哪幾條，也可以改落點。⛔ 使用者同意前不改任何檔。
+
+✅ 完成：使用者明確選定要套用哪幾條。
 
 ## 5. 套用
 
@@ -55,6 +61,8 @@ description: 回顧：一輪 task-run 跑完、或一段工作結束後，從單
 - **專案**：改專案 `CLAUDE.md`，不 commit，回報改了什麼。
 - **個人**：改 `~/.claude/CLAUDE.md`，改前備份。
 - **轉 rule-enforce**：列出來，問使用者要不要接著跑 `jill425:rule-enforce`。
+
+✅ 完成：使用者選定的每一條都已改進對應的檔，或已整理成文字交給使用者。
 
 ## 6. 回報
 

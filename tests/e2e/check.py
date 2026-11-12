@@ -29,7 +29,7 @@ def section(text, title):
 
 
 def agent_dispatches(root):
-    """從這個場地最新的對話紀錄讀出每次派 subagent 的 (類型, 模型)。"""
+    """從這個場地最新的對話紀錄讀出主線每次派 subagent 的 (類型, 模型)。驗收者由執行者派出，不在這裡。"""
     import json
     slug = re.sub(r"[/.]", "-", str(root))
     logs = sorted((Path.home() / ".claude/projects" / slug).glob("*.jsonl"), key=lambda p: p.stat().st_mtime)
@@ -83,14 +83,12 @@ def checks(root):
     rows = decisions.read_text().splitlines()[1:] if decisions.exists() else []
     yield "決策紀錄存在且有內容", bool(rows), f"{len(rows)} 筆"
     yield "決策紀錄提到單 3", any(re.search(r"(^|\t)#?3(\t|$)", r) for r in rows), ""
-    yield "鎖檔已刪除", not (gitdir / "jill425" / "task-run.lock").exists(), ""
+    yield "鎖檔已刪除", not list((gitdir / "jill425").glob("*.lock")), ""
 
     dispatches = agent_dispatches(root)
-    executors = [d for d in dispatches if d[0].endswith("task-executor")]
-    testers = [d for d in dispatches if d[0].endswith("task-tester")]
-    yield "執行者依場景指定了模型", bool(executors) and all(d[1] for d in executors), str(executors)
-    pairs = list(zip(executors, testers))
-    yield "驗收者的模型跟執行者不同", bool(pairs) and all(t[1] and t[1] != e[1] for e, t in pairs), str(pairs)
+    yield "執行者依場景指定了模型", bool(dispatches) and all(d[1] for d in dispatches), str(dispatches)
+    tester_rows = [r for r in rows if re.search(r"tester|驗收者", r)]
+    yield "決策紀錄記了驗收者的模型", any(re.search(r"opus|sonnet|haiku|fable", r) for r in tester_rows), ""
     yield "決策紀錄記了派工的模型", any(re.search(r"opus|sonnet|haiku|fable", r) for r in rows), ""
 
     out = (root / ".e2e-run.log").read_text() if (root / ".e2e-run.log").exists() else ""

@@ -1,15 +1,15 @@
 ---
 name: code-how
-description: 解釋一段 code 或一個子系統怎麼運作：元件、執行流程、資料怎麼走、東西放在哪、哪裡容易踩坑。複雜的範圍會派幾個探索者各查一個面向，再整合成一份說明。使用者問「X 怎麼運作」「這段在做什麼」「這該放哪一層」，或改不熟的模組、開單前需要先搞懂現況時使用。為什麼長這樣用 jill425:code-why。Use for "how does X work", code walkthroughs, and where-does-this-belong questions.
+description: 解釋 code 怎麼運作：使用者問某段 code 或子系統怎麼運作、該放哪一層，或要改不熟的模組前使用。
 ---
 
 # jill425:code-how — 這段 code 怎麼運作
 
 產出一份讓不熟這塊的資深工程師讀完就能開始動手的說明：夠建立心智模型，但不是逐行註解。全程唯讀，不改任何檔。
 
-說明只根據實際讀過的 code（契約 invariant 6）。`docs/arch/`、README、註解與記憶只當線索；跟 code 對不上時以 code 為準，並把不一致列進〈坑〉。
+說明只根據實際讀過的 code，**以 code 為準**：`docs/arch/`、README、註解與記憶只當線索，跟 code 對不上的列進〈坑〉。
 
-派 subagent 照契約〈派 subagent 的慣例〉與〈模型分配〉（`${CLAUDE_PLUGIN_ROOT}/contract/task-contract.md`）。
+派 subagent 照 `${CLAUDE_PLUGIN_ROOT}/contract/dispatch.md`。
 
 ## 1. 判斷範圍
 
@@ -55,7 +55,6 @@ description: 解釋一段 code 或一個子系統怎麼運作：元件、執行�
 
 ## 5. 交回
 
-這次是為了某張單而跑時，把摘要（附 `檔案:行` 或出處）交給呼叫的角色寫進單：建單時寫進 `## 背景`；執行中發現跟單上的理解不同時，寫成〈推翻假設〉或〈決策〉執行備註。不是為了某張單、但結論會影響之後的開發時，建議使用者開一張調查單記下來。
-
-
 說明本身就是產出。複雜範圍時直接呈現解說者的版本，可以小修讓它更清楚，但不要大改。若這次是為了接下來要改這塊 code 或開單，最後加一段「改動前要注意」：哪些行為必須保留、哪裡最容易改壞。
+
+為某張單而跑時，照 `${CLAUDE_PLUGIN_ROOT}/contract/task-contract.md`〈執行期產出〉的「查證結論」交回；不是為了某張單、但結論會影響之後的開發時，建議使用者開一張調查單記下來。

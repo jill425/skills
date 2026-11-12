@@ -1,6 +1,7 @@
 ---
 name: project-harness
-description: 替專案產生一個專案內的 verify skill（`.claude/skills/verify-<app>/`）：怎麼啟動真實 app、怎麼確認它可用、怎麼像使用者一樣操作、證據存哪、怎麼清掉，再加一份功能地圖；產出後自己完整跑過一次才算交付。當專案有畫面或對外服務、但沒有腳本化的方式證明行為時使用；jill425:project-init 交接時、使用者說「建立驗證工具」「讓 tester 能操作畫面」時也用。 Use to create a project-local skill that launches the real app, drives it like a user, and keeps evidence.
+description: 替專案產生 verify-<app> skill：啟動真實 app、像使用者一樣操作、留下證據。
+disable-model-invocation: true
 ---
 
 # jill425:project-harness — 產生專案的驗證 skill
@@ -11,7 +12,7 @@ description: 替專案產生一個專案內的 verify skill（`.claude/skills/ve
 
 1. **從 repo 問，不先問人**：只問 code 裡看不到的。
    - **介面**：使用者實際碰的是什麼——網頁、App（Flutter 等）、API、CLI。有多個就選主要的，其他記下。
-   - **啟動**：專案自己寫的啟動指令（`README`、`package.json` scripts、`Makefile`、`docker compose`），port、環境變數、種子資料、登入方式。只啟動本機，不指向任何共用的測試或正式環境（契約 invariant 5）。
+   - **啟動**：專案自己寫的啟動指令（`README`、`package.json` scripts、`Makefile`、`docker compose`），port、環境變數、種子資料、登入方式。只啟動本機的 app；共用的測試與正式環境一律只讀。
    - **驅動**：先找 repo 既有的工具（Playwright／Cypress、`integration_test`、HTTP client 測試），沒有才選通用做法：網頁用 Playwright，Flutter 用 `integration_test`／`flutter drive`，API 用 `curl`／`httpx`，CLI 用 PTY。
    - **觀察**：能拿到什麼證據——截圖、回應內容、log、exit code、DB 狀態。
    - **隔離**：能不能同時開兩份（port、資料目錄）。不行就在產出裡寫明，寧可拒絕也不要操作使用者正在用的那份。

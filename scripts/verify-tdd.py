@@ -8,9 +8,12 @@
         --runner "uv run pytest"（預設）
 
 exit code：0 通過／1 未過／2 通過但有項目需人工看／3 無法驗證（環境）
+拿掉實作後測試無法收集時（新模組、新函式被 import），改用 stub 再驗一次：實作檔放回，
+只把這張單新增或改過的函式本體換成 `return None`。
 v1 只支援 pytest；「新增的測試」以 `def test_*` 名稱比對基底版本，既有測試改了斷言不在檢查範圍。
 """
 import argparse
+import ast
 import os
 import re
 import shlex
@@ -125,6 +128,60 @@ def remove_implementation(wt, base, impl_changes):
             git(wt, "checkout", base, "--", path)
 
 
+def functions(src):
+    """{限定名稱: (節點, 原始碼)}，含類別裡的方法，不含函式裡的巢狀函式。"""
+    found = {}
+
+    def walk(node, prefix):
+        for child in ast.iter_child_nodes(node):
+            if isinstance(child, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                found[prefix + child.name] = (child, ast.get_source_segment(src, child))
+            elif isinstance(child, ast.ClassDef):
+                walk(child, f"{prefix}{child.name}.")
+
+    walk(ast.parse(src), "")
+    return found
+
+
+def stub_implementation(wt, base, head, impl_changes):
+    """放回實作檔，把這張單新增或改過的函式本體換成 `return None`。回傳換掉的函式數。"""
+    stubbed = 0
+    for status, path in impl_changes:
+        if status == "D":
+            continue
+        git(wt, "checkout", head, "--", path)
+        if not path.endswith(".py"):
+            continue
+        file = Path(wt) / path
+        src = file.read_text()
+        before = functions(git(wt, "show", f"{base}:{path}", check=False) or "")
+        lines = src.split("\n")
+        changed = [node for name, (node, text) in functions(src).items() if before.get(name, (None, None))[1] != text]
+        for node in sorted(changed, key=lambda n: n.lineno, reverse=True):
+            first = node.body[0]
+            lines[first.lineno - 1:node.end_lineno] = [lines[first.lineno - 1][:first.col_offset] + "return None"]
+        file.write_text("\n".join(lines))
+        stubbed += len(changed)
+    return stubbed
+
+
+def judge_stubbed(rows, stubbed):
+    """stub 只會把「需人工看」升成通過：stub 後斷言失敗才算有鑑別力，其餘維持原判。"""
+    out, levels = [], {PASS}
+    for path, name, r, h, verdict in rows:
+        level = FAIL if verdict.startswith("✗") else PASS if verdict == "✓" else MANUAL
+        if level == MANUAL:
+            s = outcome_for(*stubbed, module_of(path), name)
+            r = f"{r}；stub：{s}"
+            if s == "failure":
+                verdict, level = "✓（函式本體換成 return None 後斷言失敗）", PASS
+            elif s == "passed":
+                verdict = "⚠ 函式本體換成 return None 後仍通過：測試沒檢查結果，或實作不在函式本體，請人工看"
+        out.append((path, name, r, h, verdict))
+        levels.add(level)
+    return out, FAIL if FAIL in levels else max(levels)
+
+
 def judge(new_tests, head, reverted):
     rows, levels = [], {PASS}
     for path, names in new_tests.items():
@@ -188,13 +245,17 @@ def verify(args, repo, workdir):
         remove_implementation(wt, base, impl)
         run_pytest(args.runner, wt, tests, workdir / "reverted.xml")
         rows, code = judge(new_tests, head, parse_junit(workdir / "reverted.xml"))
+        if code == MANUAL and stub_implementation(wt, base, head_sha, impl):
+            run_pytest(args.runner, wt, tests, workdir / "stub.xml")
+            rows, code = judge_stubbed(rows, parse_junit(workdir / "stub.xml"))
     finally:
         git(repo, "worktree", "remove", "--force", str(wt), check=False)
 
     print("\n| 測試 | 拿掉實作 | 有實作 | 判定 |\n|---|---|---|---|")
     for path, name, r, h, verdict in rows:
         print(f"| `{path}::{name}` | {r} | {h} | {verdict} |")
-    print(f"\njunit 證據：{workdir}/head.xml、{workdir}/reverted.xml")
+    stub = f"、{workdir}/stub.xml" if (workdir / "stub.xml").exists() else ""
+    print(f"\njunit 證據：{workdir}/head.xml、{workdir}/reverted.xml{stub}")
     return code
 
 

@@ -1,6 +1,6 @@
 ---
 name: project-init
-description: 專案初始化：問答建立專案層級 CLAUDE.md 與 README、訂分階段路線圖與檢核點、產出初版架構文件。當使用者要初始化新專案、設定專案規則、建立或更新專案 CLAUDE.md 時使用。 Use to set up a project's CLAUDE.md, README, phased roadmap, and first architecture doc.
+description: 專案初始化：要建立或更新專案的 CLAUDE.md、README、分階段路線圖時使用。
 ---
 
 # jill425:project-init — 建立專案層級設定
@@ -22,8 +22,8 @@ task 契約（`${CLAUDE_PLUGIN_ROOT}/contract/task-contract.md`）對所有用�
 3. **驗證環境**：技術棧定案後，用 Bash 實查本機版本與工具鏈（如 `python3 --version`、`node -v`、`uv --version`），確認選定的語言／版本／工具在這台機器上裝得起來、跑得動；有落差當場回報，與使用者敲定用哪個版本再往下。版本約束鎖進 manifest（`pyproject.toml`／`package.json`），CLAUDE.md 只記選型與理由——版本號快照會過期，讓 manifest 當事實來源。
    ✅ 完成：選定的工具鏈每項都在本機實查通過（或已與使用者敲定安裝方案），且版本約束落在 manifest、不在 CLAUDE.md。
 
-4. **擬分階段路線圖**：把專案切成數個階段（MVP-1／MVP-2／Phase…），每階段一塊**端到端、裝得起來跑得動、看得見**的垂直切片（第一階段就是 walking skeleton），列出範圍與檢核點；每階段對應一或多張 task 單，階段門檻＝各單的 `## Test 方法`。
-   ✅ 完成：每個階段都答得出「該階段結束時能看到什麼實際在跑」——答不出的階段是水平半成品，重切。
+4. **擬分階段路線圖**：切之前**先查同類產品**：市面上已有的產品或開源專案怎麼做、缺什麼，從官方文件、原始碼、issue 查證並附來源；查到的缺口就是差異化，決定哪些階段要先做。再把專案切成數個階段（MVP-1／MVP-2／Phase…），每階段一塊**端到端、裝得起來跑得動、看得見**的垂直切片（第一階段就是 walking skeleton），每階段都寫三項：**範圍**（做哪些功能、碰哪些表）、**檢核點**（做完能實際操作或測試驗證的具體結果，例如「用手機傳訊息收到回覆」，不寫「功能完成」這類無法驗證的話）、**範圍外**（容易被順手做掉、但留給之後階段的事）。每階段對應一或多張 task 單，階段門檻＝各單的 `## Test 方法`。
+   ✅ 完成：同類產品的做法與缺口有來源可查；每個階段都有範圍、檢核點、範圍外，且答得出「該階段結束時能看到什麼實際在跑」——答不出的階段是水平半成品，重切。
 
 5. **草稿過目**：把 CLAUDE.md（含路線圖與檢核點）與 README 草稿摘要列給使用者。
    ✅ 完成：使用者明確同意。寫檔有副作用，同意前停在這一步。
@@ -36,7 +36,7 @@ task 契約（`${CLAUDE_PLUGIN_ROOT}/contract/task-contract.md`）對所有用�
 7. **登記 task 後端**：把步驟 2 問到的後端與 task 位置寫進 `~/.claude/task-backends/projects.md`（不存在就從契約指定的範本建立；以 `git remote get-url origin` 為鍵；無 remote 用本機路徑）。登記表已有該專案就更新那一列、備註保留；專案已推上 remote 但表上仍是本機路徑，就把鍵換成 remote。
    ✅ 完成：登記表有且只有一列對應此專案，且對應的 adapter 檔讀得到。
 
-8. **初版架構文件**：架構定案後，用 `jill425:doc-arch` 產出結構化 Markdown 存 `docs/arch/`；後續結構變動由 `jill425:task-run` 同步更新。
+8. **初版架構文件**：架構定案後，用 `jill425:doc-arch` 產出結構化 Markdown 存 `docs/arch/`；後續結構變動由 `jill425:task-dev` 實作時同步更新。
    ✅ 完成：文件反映定案的分層與資料流，與 CLAUDE.md 一致。
 
 9. **交接**：提示使用者下一步用 `jill425:task-plan` 把第一階段開成單；專案有畫面或對外服務的，walking skeleton 完成後跑 `jill425:project-harness` 產生專案的驅動與留證工具，之後的單才能引用它驗收。

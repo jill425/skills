@@ -1,6 +1,7 @@
 ---
 name: start
-description: 入口：依專案現況與使用者的話，判斷要初始化專案、開需求單、開 bug 單、還是執行待辦，再交給對應的 skill。使用者說「開始」「幫我處理這個」，或丟來一個需求、一個錯誤但沒指定流程時使用。Use as the entry point when the user brings a request, a bug, or "let's go" without naming a workflow.
+description: 入口：依專案現況，把需求、bug、問題或「繼續」交給對應的 skill。
+disable-model-invocation: true
 ---
 
 # jill425:start — 入口
@@ -21,7 +22,8 @@ description: 入口：依專案現況與使用者的話，判斷要初始化專�
 | bug | 描述**現在的行為不對**：錯誤訊息、stack trace、「壞了」「跟預期不同」「以前可以」 | `jill425:task-plan`，開 bug 類單（先重現） |
 | 需求 | 描述**想要新的或不同的行為** | `jill425:task-plan` |
 | 調查、比較、效能 | 要找原因、評估可不可行、比較幾種做法、讓某個數字變好 | `jill425:task-plan`，開調查、原型或效能單 |
-| 執行 | 沒有新需求，要推進：「做」「繼續」「把待辦做完」，或指名某張單 | `jill425:task-run` |
+| 做一張單 | 沒有新需求，指名某張單，或「做」「繼續」而只有一張可做 | `jill425:task-dev` |
+| 推進多張 | 「把待辦做完」、要無人值守執行，或有多張可做的單 | `jill425:task-multi-run` |
 | 問怎麼運作 | 想知道 code 怎麼運作、這段在做什麼、該放哪一層 | `jill425:code-how`，不開單 |
 | 問為什麼 | 想知道為什麼這樣寫、能不能拿掉、什麼時候開始變的 | `jill425:code-why`，不開單 |
 | 回顧 | 「回顧」「這次學到什麼」，或剛跑完一輪 | `jill425:task-reflect` |
@@ -30,11 +32,11 @@ description: 入口：依專案現況與使用者的話，判斷要初始化專�
 
 - **現況優先**：沒有專案 `CLAUDE.md` 時，即使使用者帶來需求或 bug，也先走 `jill425:project-init`；把那個需求記下，初始化完成後接著交給 `jill425:task-plan`。使用者明說不要初始化時例外。
 - **bug 或需求分不清**（例如「改成會…」）：問自己「有沒有『本來就該這樣卻沒有』」——有就是 bug，沒有就是需求。仍分不清就當需求，並在交棒時說明。
-- **一句話裡有好幾件事**：拆開各自歸類，依 `project-init` → `task-plan` → `task-run` 的順序處理。
-- **有單正在執行或待重做，使用者又帶來新需求**：先開新單，再提醒有單在進行中，`jill425:task-run` 下次會先接它。
+- **一句話裡有好幾件事**：拆開各自歸類，依 `project-init` → `task-plan` → `task-dev` 或 `task-multi-run` 的順序處理。
+- **有單正在執行或待重做，使用者又帶來新需求**：先開新單，再提醒有單在進行中，`jill425:task-dev` 與 `jill425:task-multi-run` 下次會先接它。
 
 ## 3. 交棒
 
 用一句話說明「判斷為 X，因為 Y，交給 `jill425:Z`」，然後叫用那支 skill，把使用者的原話完整帶過去。不等確認；判斷錯了，使用者會直接糾正。
 
-`jill425:task-plan` 開完單、使用者也同意後，如果原話有「直接做」「做完」這類要求，接著交給 `jill425:task-run`。
+`jill425:task-plan` 開完單、使用者也同意後，如果原話有「直接做」「做完」這類要求，接著交給 `jill425:task-dev`（一張）或 `jill425:task-multi-run`（多張）。
