@@ -1,6 +1,6 @@
 ---
 name: plan-review
-description: 計畫審查：落單前拿單的草稿對照 code，從一個面向找缺口與要使用者回答的問題。`jill425:task-plan` 寫完草稿後，每個面向各跑一次。
+description: 計畫審查：落單前拿單的草稿對照 code，從一個面向找缺口與要使用者回答的問題。手動叫用時一次審一個面向；`jill425:task-plan` 照同一份方法同時派三個檢查者。
 context: fork
 agent: jill425:task-watcher
 ---
